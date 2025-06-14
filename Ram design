@@ -1,0 +1,22 @@
+// Simple Synchronous RAM Module
+module simple_sync_ram #(
+    parameter ADDR_WIDTH = 4,  // Address bus width (16 locations)
+    parameter DATA_WIDTH = 8   // Data bus width (8 bits per location)
+) (
+    input wire clk,
+    input wire we,                       // Write enable
+    input wire [ADDR_WIDTH-1:0] addr,    // Address
+    input wire [DATA_WIDTH-1:0] din,     // Data input
+    output reg [DATA_WIDTH-1:0] dout     // Data output
+);
+
+    // RAM storage
+    reg [DATA_WIDTH-1:0] mem [0:(1<<ADDR_WIDTH)-1];
+
+    always @(posedge clk) begin
+        if (we)
+            mem[addr] <= din;         // Write operation on rising edge
+        dout <= mem[addr];            // Read operation on rising edge
+    end
+
+endmodule
